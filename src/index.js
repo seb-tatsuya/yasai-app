@@ -1,8 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {Provider} from 'react-redux';
+import createStore from './reducks/store/store';
 import './index.css';
 import App from './App';
 // import reportWebVitals from './reportWebVitals';
+
+// propsにstoreを渡す（ラップしたコンポーネントにstoreを渡す）
+export const store = createStore();
+
+ReactDOM.render(
+  // propsに上で定義したstoreを代入
+  <Provider props={store}>
+    <App /> {/* AppをProviderでラッピンングすることによりアプリケーション全体でstoreを変更、参照が可能  */}
+  </Provider>
+
+)
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
