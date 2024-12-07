@@ -4,15 +4,21 @@ import {Provider} from 'react-redux';
 import createStore from './reducks/store/store';
 import './index.css';
 import App from './App';
+import { ConnectedRouter } from 'connected-react-router';
+import * as History from 'history';
 // import reportWebVitals from './reportWebVitals';
 
-// propsにstoreを渡す（ラップしたコンポーネントにstoreを渡す）
-export const store = createStore();
+const history = History.createBrowserHistory(); // 現在の居場所または前回どこにいたか(URL)の履歴を作成
+export const store = createStore(history);
 
+// propsにstoreを渡す（ラップしたコンポーネントにstoreを渡しアプリ全体でstoreを参照）
+// さらにConnectedRouterでラッピング、propsにhistory情報を渡す
 ReactDOM.render(
   // propsに上で定義したstoreを代入
   <Provider props={store}>
-    <App /> {/* AppをProviderでラッピンングすることによりアプリケーション全体でstoreを変更、参照が可能  */}
+    <ConnectedRouter history={history}>
+      <App /> {/* AppをProviderでラッピンングすることによりアプリケーション全体でstoreを変更、参照が可能  */}
+    </ConnectedRouter>
   </Provider>
 
 )
