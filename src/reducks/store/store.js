@@ -16,11 +16,10 @@ export default function createStore(history){ //history=今どこにいるかの
             users: UsersReducer
         }),
         // routerをミドルウェアで使うと言う宣言
+        // ルーティング用のミドルウェアを導入(ミドルウェアはアプリケーションとOSの中間)
         applyMiddleware(
             routerMiddleware(history)
         )
     );
 }
-
-// ルーティング用のミドルウェアを導入(ミドルウェアはアプリケーションとOSの中間)
 
