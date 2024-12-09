@@ -2,7 +2,7 @@ import React from "react";
 import { Route ,Switch} from "react-router";
 import {Login, Home} from "templates";
 
-// ブラウザのURLに応じて表示するコンポーネントを切り替える（Routerコンポーネント）
+// ブラウザのURLに応じて表示するコンポーネントを切り替える（ルーティング（Routerコンポーネント））
 export const Router = () =>{
     return (
         <Switch>
