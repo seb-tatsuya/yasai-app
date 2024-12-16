@@ -17,7 +17,7 @@ export default class LoginClass extends Component{
     }
 }
 
-const Login = () => {
+export const Login = () => {
     const dispatch = useDispatch();
     const selector = useSelector(state => state);
 
@@ -31,6 +31,4 @@ const Login = () => {
                 dispatch(push('/'))}}>ログイン</button> {/* push=URLに遷移する役割　ログインしたらホーム画面に遷移するような流れ*/}
         </div>
     );
-};
-
-export default Login;
+}
