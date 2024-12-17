@@ -1,7 +1,11 @@
 import React , {useCallback , useState} from "react";
 import {PrimaryButton, TextInput} from "../components/UIkits";
+import {signUp} from '../reducks/users/operations'
+import { useDispatch } from "react-redux";
 
 const SignUp = () => {
+
+    const dispatch = useDispatch()
 
     // 各入力値の初期値
     const [username , setUsername] = useState(""),
@@ -59,7 +63,7 @@ const SignUp = () => {
             <dev className="center">
                 <PrimaryButton
                     label={"アカウントを登録する"}
-                    onClick={() => console.log("clicked")}
+                    onClick={() => dispatch(signUp(username , email , password , confirmPassword))} // firebase.Ruhr
                 />
 
             </dev>
