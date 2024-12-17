@@ -27,7 +27,7 @@ export const signIn = (
     }
 }
 
-export const signUp = (username , email , password , confirmPassword){
+export const signUp = (username , email , password , confirmPassword)　=> {
     return async (dispatch) => {
         // Validetion
         if(username === "" || email === "" || password === "" || confirmPassword === ""){
@@ -61,7 +61,7 @@ export const signUp = (username , email , password , confirmPassword){
                     }
 
                     // usersコレクションに対して新しいアカウントを登録
-                    db.collection('users').doc(uid).state(usetInitalDate) // uidと一致させた方が管理しやすい
+                    db.collection('users').doc(uid).state(userInitalDate) // uidと一致させた方が管理しやすい
                          .then(() => {
                             dispatch(push('/'))　// 成功した場合ホーム画面に戻る
                          })
