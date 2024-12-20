@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "yasai-app"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }

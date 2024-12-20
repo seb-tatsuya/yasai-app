@@ -5,7 +5,7 @@ import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 import { getFunctions} from 'firebase/functions'
-import { firebaseConfig } from './config';
+import { firebaseConfig } from './config'
 
 // V9以降
 // reactアプリの中でfirebaseのサービスが使える
