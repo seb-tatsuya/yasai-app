@@ -1,30 +1,68 @@
 import { signInAction } from "./actions"
 import { push } from "connected-react-router"
 import {auth, db ,FirebaseTimestamp} from '../../firebase/index'
+import { snapshotEqual } from "firebase/firestore"
+import { onAuthStateChanged } from "firebase/auth"
 
-export const signIn = (
-    email,password
-) => {
-    return async (dispatch, getState) => {
-        const state = getState() // Reduxのstateの情報を取得
-        const isSignedIn = state.users.isSignedIn // ReduxのstateのusersのisSignedInの情報を取得
+// 認証をリッスンする関数
+export const listenAuthState = () => {
+    return async (dispatch) => {
+        return onAuthStateChanged(user => {
+            if(user){ // userが存在している条件＝認証を完了していると言う意味
+                // userの認証が完了している場合はuser情報をDBから取得してstoreにSignInした時と同じように形でstateをもたす
+                const uid = user.uid
+                db.collection('users').doc(uid).get() // usersコレクションからuidを取得する
+                .then(snapshot => {
+                    const data = snapshot.data()
+                    // クエリを投げてreduxのユーザー情報を更新する
+                    dispatch(signInAction({
+                        isSignedIn: true,
+                        role: data.role,
+                        uid: uid,
+                        username: data.username
+                    }))
 
-        if(!isSignedIn){
-            const url = 'https://api.github.com/users/deatiger'
-            const response = await fetch(url) // fetchメソッドも非同期処理（awaitを付けなかったらfetchの実行結果が返ってくる前に次の処理に移ってしまう）
-                                    .then(res => res.json())
-                                    .catch(() => null)
-
-            const  username = response.login
-
-            dispatch(signInAction({
-                isSignedIn: true,
-                uid:"00001",
-                userName:username
-            }))
-            dispatch(push('/'))
-        }
+                    dispatch(push('/'))
+                })
+            }else{
+                dispatch(push('/signin'))
+            }
+        })
     }
+}
+
+export const signIn = (email,password) => {
+    return async(dispatch) => {
+        // Validetion
+        if(email === "" || password === ""){
+            alert("必須項目が未入力です")
+            return false //signup自体は何もされずにここで終了となる
+
+        }
+
+        auth.signInWithEmailAndPasswrd(email,password)
+        .then(result => {
+            const user = result.user
+
+            if(user){
+                const uid = user.uid
+                db.collection('users').doc(uid).get()
+                .then(snapshot => {
+                    const data = snapshot.data()
+                    dispatch(signInAction({
+                        isSignedIn: true,
+                        role: data.role,
+                        uid: uid,
+                        username: data.username
+                    }))
+
+                    dispatch(push('/'))
+                })
+            }
+        }
+
+        )
+    } 
 }
 
 export const signUp = (username , email , password , confirmPassword)　=> {

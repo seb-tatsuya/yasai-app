@@ -10,6 +10,7 @@ const initialState = {
     // ユーザー情報
     users:{
         isSignedIn: false,
+        role: "",
         uid: "",
         userName: ""
     }
