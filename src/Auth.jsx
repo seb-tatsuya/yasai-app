@@ -4,7 +4,7 @@ import { getIsSignedIn } from "./reducks/users/selectors";
 
 const Auth = ({Children}) => {
     const dispatch = useDispatch()
-    const seelctor = userSelector((state) => state);
+    const selector = userSelector((state) => state);
     const isSignedIn = getIsSignedIn(selector); //isSignedIn
 
     // コンポーネントディルマインと同じ
