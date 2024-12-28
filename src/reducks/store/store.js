@@ -3,7 +3,7 @@ import {
     // applyMiddleware
 } from 'redux';
 import { configureStore , getDefaultMiddleware } from '@reduxjs/toolkit';
-// import {ProductsReducer} from '../products/reducers';
+import {ProductsReducer} from '../products/reducers';
 import { UsersReducer } from '../users/reducers';
 // import { ConnectedRouter,routerMiddleware } from 'connected-react-router';
 import thunk from 'redux-thunk';
@@ -11,7 +11,8 @@ import thunk from 'redux-thunk';
 export const createStore = (history) => { //history=今どこにいるかの情報（URL）
 
     const rootReducer = combineReducers({
-        users: UsersReducer
+        users: UsersReducer,
+        Products: ProductsReducer
         // 他のリデューサをここに追加できます
       });
 

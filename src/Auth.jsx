@@ -15,10 +15,11 @@ const Auth = ({Children}) => {
 
     },[]);
 
-    // サインインしていない場合は空の
+    // サインインしていない場合は空のjsxを返す
     if(!isSignedIn){
         return <></>
     }else{
+        // 子要素（HOME）を返す
         return Children
     }
 }

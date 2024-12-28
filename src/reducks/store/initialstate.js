@@ -4,7 +4,7 @@
 const initialState = {
     // 商品情報
     products:{
-
+        List:[]
     },
 
     // ユーザー情報

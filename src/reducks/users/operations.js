@@ -1,4 +1,4 @@
-import { signInAction } from "./actions"
+import { signInAction, signOutAction } from "./actions"
 import { push } from "connected-react-router"
 import {auth, db ,FirebaseTimestamp} from '../../firebase/index'
 import { snapshotEqual } from "firebase/firestore"
@@ -22,12 +22,30 @@ export const listenAuthState = () => {
                         username: data.username
                     }))
 
-                    dispatch(push('/'))
+                    // dispatch(push('/'))　// コメントアウト：常にホーム画面に戻ってしまう
                 })
             }else{
                 dispatch(push('/signin'))
             }
         })
+    }
+}
+
+// パスワードリセット画面　ファンクション
+export const resetPassword = (email) => {
+    return async (dispatch) => {
+        if(email === ""){
+            alert("必須項目が未入力です")
+            return false //signup自体は何もされずにここで終了となる
+        }else{
+            auth.signInWithEmailAndPasswrd(email)
+            .then(() => {
+                alert('入力されたアドレスにパスワードリセット用のメールを送りました。')
+                dispatch(push('/signin'))
+            }).catch(() => {
+                alert('パスワードリセットに失敗しました。')
+            })
+        }
     }
 }
 
@@ -104,6 +122,18 @@ export const signUp = (username , email , password , confirmPassword)　=> {
                             dispatch(push('/'))　// 成功した場合ホーム画面に戻る
                          })
                 }
+        })
+    }
+}
+
+export const signOut = () {
+    return async (dispatch()) => {
+        // firebaseのauthのサインアウトが呼び出されたら
+        auth.signOut()
+        .then(() => {
+            // reduxのstoreを初期化しておく
+            dispatch(signOutAction());
+            dispatch(push('/signin'))
         })
     }
 }
