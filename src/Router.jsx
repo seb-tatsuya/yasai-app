@@ -1,6 +1,6 @@
 import React from "react";
 import { Route ,Switch} from "react-router";
-import {Home ,ProductEdit,Reset ,SignIn ,SignUp} from "./templates";
+import {ProductDetail,ProductEdit,ProductList,Reset ,SignIn ,SignUp} from "./templates";
 import Auth from './Auth'
 
 // ルーティング
@@ -16,8 +16,9 @@ export const Router = () =>{
 
             {/* authコンポーネント 認証した状態で見れるようにする*/}
             <Auth>
-                <Route exact paht="(/)?" component={Home} /> {/* (/)? は正規表現と同じ()内の/が有っても無くても表示します*/}
-                <Route exact paht="/product/edit" component={ProductEdit} />
+                <Route exact paht="(/)?" component={ProductList} /> {/* (/)? は正規表現と同じ()内の/が有っても無くても表示します*/}
+                <Route exact paht="/product/:id?" component={ProductDetail} /> {/*:idは変数 */}
+                <Route paht="/product/edit(/:id)?" component={ProductEdit} /> {/*正規表現(/:id)? で商品IDに応じて表示画面を指定する又はIDの指定が無い場合もProductEditを呼び出す */}
             </Auth>
         </Switch>
     );

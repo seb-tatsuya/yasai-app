@@ -6,9 +6,19 @@ import initialState from '../store/initialstate'
 export const ProductsReducer = (state = initialState.products, action) => {
 //actionのタイプによってstateの状態をどのように変更するかを決める
 switch(action.type){
-    
+
+    case Actins.DELETE_PRODUCTS:
+        return {
+            ...state,
+            list: [...action.payload] // []がないと更新したかわからない
+        };
+    case Actins.FETCH_PRODUCTS:
+            return {
+                ...state,
+                list: [...action.payload] // []がないと更新したかわからない
+            };
+
     default:
         return state
-
     }
 }

@@ -2,7 +2,7 @@ import { IconButton } from "@material-ui/core/IconButton";
 import React, { useCallback } from "react";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { makeStyles } from "@material-ui/core";
-import ImagePreview from "./imegePreview";
+import ImagePreview from "./ImagePreview";
 
 const useStyles = makeStyles({
     icon: {
@@ -34,15 +34,15 @@ const ImageArea = (props) => {
         const file = event.target.files; // event.target.filesでアップロードされたファイルを取得
         let blob = new Blob(file, {type: "image/jpeg"}); // firebase storageへアップロードするためにblobへ変換する必要がある
 
-        const S = "abcdefghijklmnopqrstuvwxwg"; // ファイル名を暗号化する際に使用する文字列（ファイル競合回避のため）
+        const S = "abcdefghijklmnopqrstuvwxwgABCDEFGHIJKLMNOPQRSTUVWXYG0123456789"; // ファイル名を暗号化する際に使用する文字列（ファイル競合回避のため）
         const N = 16; // １６桁の暗号化
         const fileName = Arrey.form(crypto.getRandomValues(new Uint32Array(N))).map((n) => S[n%S.length].joen(''))
         const uploadRef = storage.ref('image').child(fileName); // firebaseのindex.jsファイルでexportしたstorage
-        const uploadTask = uploadRef.put(blob);
+        const uploadTask = uploadRef.put(blob); // firebase storageにファイルをアップロード
         uploadTask.then(() => {
-            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => { // アップロードしたファイルのダウンロードURLを取得
                 const newImage = {id: fileName , path: downloadURL}; // オブジェクト型
-                props.setImages(prevState => [...prevState, newImage])
+                props.setImages(prevState => [...prevState, newImage]) // 配列の更新
             })
         })
     }, [props.setImages])

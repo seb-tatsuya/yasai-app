@@ -5,6 +5,8 @@ import createStore from './reducks/store/store';
 import App from './App';
 import { ConnectedRouter } from 'connected-react-router';
 import * as History from 'history';
+import { MuiThemeProvider } from '@material-ui/core';
+import {theme} from "../assets/theme"
 // import reportWebVitals from './reportWebVitals';
 
 const history = History.createBrowserHistory(); // 現在の居場所または前回どこにいたか(URL)の履歴を作成
@@ -17,7 +19,9 @@ root.render(
   // propsに上で定義したstoreを代入
   <Provider props={store}>
     <ConnectedRouter history={history}>
-      <App /> {/* AppをProviderでラッピンングすることによりアプリケーション全体でstoreを変更、参照が可能  */}
+      <MuiThemeProvider theme={theme}>
+        <App /> {/* AppをProviderでラッピンングすることによりアプリケーション全体でstoreを変更、参照が可能  */}
+      </MuiThemeProvider>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
