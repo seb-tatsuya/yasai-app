@@ -1,8 +1,10 @@
-import React , {useState,useEffect,useCallback} from "react";
-import { useSelector } from "react-redux";
+import React , {useState, useEffect, useCallback} from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
 import HTMLReactParser from "html-react-parser";
-import {ImageSwaiper} from "../components/products"
+import {ImageSwaiper, SizeTable} from "../components/products"
+import { db , FierbaseTimestamp, FirebaseTimestamp} from "../firebase/index"
+import { addProductToCart } from "../reducks/users/operations";
 
 const useStyles = makeStyles((theme) => ({
     sliderBox:{
@@ -47,6 +49,7 @@ const ProductDetail = () => {
     const selector = useSelector((state) => state);
     const path = selector.router.location.pathname;
     const id = path.split('/product/')[1];
+    const dispatch = useDispatch();
 
     const [product, setProduct] = useState(null);
 
@@ -57,6 +60,21 @@ const ProductDetail = () => {
             setProduct(data)
         })
     },[]);
+
+    const addProduct = useCallback((selectedSize) => {
+        const timestamp = FirebaseTimestamp.now();
+        dispatch(addProductToCart({ // DB設計はuserの中にcartを持たせる為、ユーザー毎にカートがあるイメージ
+            added_at: timestamp,
+            description: product.description,
+            gender: product.gender,
+            images: product.images,
+            name: product.name,
+            price: product.price,
+            productId: product.productId,
+            quantity: product.quantity,
+            size: product.size
+        }))
+    },[product]); //子要素に関数を渡したい場合はコールバック関数をメモ化
 
     return (
         <section className="c-section-wrapin">
@@ -69,6 +87,7 @@ const ProductDetail = () => {
                         <h2 className="u-text__headline">{product.name}</h2>
                         <p className={classes.price}>{product.price.toLocaleString()}</p>
                         <div className="module-spacer--small"/>
+                        <SizeTable addProduct={addProduct} sizes={product.sizes} />
                         <div className="module-spacer--small"/>
                         <p>{returnCodeToBr(product.description)}</p> {/*HTMLタグの改行コードを生成 */}
                     </div>
@@ -77,4 +96,5 @@ const ProductDetail = () => {
         </section>
     )
 };
+
 export default ProductDetail

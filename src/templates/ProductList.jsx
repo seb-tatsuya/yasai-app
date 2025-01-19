@@ -11,11 +11,15 @@ const ProductList = () => {
     const selector = useSelector((state) => state); // storeの状態がすべて格納されている
     const products = getProducts(selector); // productsには商品情報が格納されている
 
+    // URLのqueryパラメーターを取得
+    const query = selector.router.location.search;
+    const gender = /^\?gender=/.test(query) ? query.split('?gender=')[1] : "";
+    const category = /^\?category=/.test(query) ? query.split('?category=')[1] : "";
+
     // initialstateのproductのリストにDBから取得した値を格納していく
     useEffect( () => (
-        dispatch(fetchProducts())
-
-    ),[]);
+        dispatch(fetchProducts(gender, category))
+    ),[query]);
 
     return (
         <section className="c-selection-wrapin">

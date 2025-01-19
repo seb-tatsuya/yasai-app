@@ -5,7 +5,19 @@ const usersSelector = (state) => state.users;
 
 export const getIsSignedIn = createSelector(
     [usersSelector],
-    state => state.isSignedIn // initialstateのuid
+    state => state.isSignedIn // initialstateのisSignedIn
+)
+
+// 更新されたordersのstateをgetする
+export const getOrdersHistory = createSelector(
+    [usersSelector],
+    state => state.orders // initialstateのorders
+)
+
+// カート情報
+export const getProductsInCart = createSelector(
+    [usersSelector],
+    state => state.isSignedIn // initialstateのisSignedIn
 )
 
 // storeで管理しているusersのuidを取得する関数
@@ -17,7 +29,7 @@ export const getUserId = createSelector(
 // storeで管理しているusersのusernameを取得する関数
 export const getUsername = createSelector(
     [usersSelector],
-    state => state.username // initialstateのuid
+    state => state.username // initialstateのusername
 )
 
 // 商品情報storeから取得する

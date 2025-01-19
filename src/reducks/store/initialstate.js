@@ -9,7 +9,9 @@ const initialState = {
 
     // ユーザー情報
     users:{
+        cart: [],
         isSignedIn: false,
+        orders: [],
         role: "",
         uid: "",
         userName: ""

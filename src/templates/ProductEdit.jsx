@@ -24,6 +24,7 @@ const ProductEdit = () => {
     const [name , setName] = useState(""),
             [discliption , setDiscliption] = useState(""),
             [category , setCategory] = useState(""),
+            [categorys , setCategorys] = useState([]),
             [gender , setGender] = useState(""),
             [images , setImages] = useState([]),
             [price , setPrice] = useState(""),
@@ -45,12 +46,6 @@ const ProductEdit = () => {
     const inputPrice = useCallback((event) => {
         setPrice(event.target.value)
     },[setPrice]);
-
-    const categories = [
-        {id: "tops" , name: "トップス"},
-        {id: "shirt" , name: "シャツ"},
-        {id: "pants" , name: "パンツ"}
-    ]
 
     const genders = [
         {id: "all" , name: "すべて"},
@@ -75,6 +70,22 @@ const ProductEdit = () => {
         }
 
     }, [id]); // ディドゥマウントは第二引数にはからの配列を渡す仕様
+
+    // categorysの値をDBから取得する
+    useEffect(() => {
+        db.collection('categories').orderBy('order', 'asc').get()
+        .then(snapshots => {
+            const list = []
+            snapshots.forEach(snapshot => {               
+                const date = snapshot.date()
+                list.push({
+                    id: date.id,
+                    name: date.name
+                })
+            })
+            setCategorys(list)
+        })
+    },[]);
 
     return(
         <section>

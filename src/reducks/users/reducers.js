@@ -6,6 +6,16 @@ import initialState from '../store/initialstate'
 export const UsersReducer = (state = initialState.users, action) => {
 //actionのタイプによってstateの状態をどのように変更するかを決める
 switch(action.type){
+    case Actions.FETCH_ORDERS_HISTORY:
+        return {
+            ...state,
+            orders: [...action.payload]
+        }
+    case Actions.FETCH_PRODUCTS_IN_CART:
+        return {
+            ...state,
+            cart: [...action.payload]
+        }
     case Actions.SIGN_IN:
         return {
             ...state,

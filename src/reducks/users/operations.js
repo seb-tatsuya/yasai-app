@@ -1,8 +1,43 @@
-import { signInAction, signOutAction } from "./actions"
+import { fetchOrdersHistoryAction, signInAction, signOutAction ,fetchProductsInCartAction} from "./actions"
 import { push } from "connected-react-router"
 import {auth, db ,FirebaseTimestamp} from '../../firebase/index'
 import { snapshotEqual } from "firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth"
+
+export const addProductToCart = (addedProduct) => {
+    return async (dispatch , getState) => {
+        const uid = getState().users.uid;
+        const cartRef = db.collection('users').doc(uid).collection('cart').doc() //これから追加する商品のCartのIDをとる
+        addedProduct['cart'] = cartRef.id; // フィールドでカートIDを持たせる
+        await cartRef.set(addedProduct);
+        // ホーム画面呼び出し
+        dispatch(push('/'))
+    }
+};
+
+// 注文履歴
+export const fetchOrdersHistory = () => {
+    return async (dispatch, getState) => {
+        const uid = getState().users.uid; // userIdを取得
+        const list = [];
+
+        db.collection('users'.doc(uid)).collection('orders').orderBy('updated_at' , 'desc').get()
+        .then((snapshots) => {
+            snapshots.forEach(snapshot => {
+                const date = snapshot.data()
+                list.push(date)
+            });
+            // アクション呼び出し
+            dispatch(fetchOrdersHistoryAction(list));
+        })
+    }  
+}
+
+export const fetchProductsInCart = (products) => {
+    return async (dispatch) => {
+        dispatch(fetchProductsInCartAction(products))
+    }
+}
 
 // 認証をリッスンする関数
 export const listenAuthState = () => {
@@ -126,8 +161,8 @@ export const signUp = (username , email , password , confirmPassword)　=> {
     }
 }
 
-export const signOut = () {
-    return async (dispatch()) => {
+export const signOut = () => {
+    return async (dispatch) => {
         // firebaseのauthのサインアウトが呼び出されたら
         auth.signOut()
         .then(() => {
